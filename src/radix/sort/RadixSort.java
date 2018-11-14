@@ -4,17 +4,23 @@
 
 package radix.sort;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author Charlie Harpur and Ferris Dietrich
  */
 public class RadixSort {
-    static int[] array = new int[1000];
+    // Input section to determine the size of the array
+    static int input = Integer.parseInt(JOptionPane.showInputDialog("How many numbers do you want sorted ?"));
+    // Input to determine the maximum size of one of the numbers in the array
+    static int maxRando = Integer.parseInt(JOptionPane.showInputDialog("Enter the maximum value of the numbers ?\nEntering 1000 will allow random numbers ranging from 1 - 1000"));
+    static int[] array = new int[input];
     
     public static void main(String[] args) {
         //Fills array with random numbers
         for (int i = 0; i < array.length; i++)
         {
-            array[i] = random(0, 1000);
+            array[i] = random(0, maxRando);
         }
         System.out.println("Start!");
         
