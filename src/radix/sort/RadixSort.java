@@ -66,7 +66,6 @@ public class RadixSort {
         }
     }
     
-    
     /**
      * Gets value of a digit of a number
      * @param number Number to get digit of
