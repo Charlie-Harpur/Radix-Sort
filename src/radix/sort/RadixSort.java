@@ -11,35 +11,58 @@ public class RadixSort {
     static int[] array = new int[1000];
     
     public static void main(String[] args) {
+        //Fills array with random numbers
         for (int i = 0; i < array.length; i++)
         {
             array[i] = random(0, 1000);
         }
+        System.out.println("Start!");
+        
+        //Gets system time in nanoseconds
+        double startTime = System.nanoTime();
+        
         radixSort(array);
+        
+        //Prints out time to sort (in milliseconds)
+        System.out.println("Sort time: " + ((System.nanoTime() - startTime) / 1000000) + "ms");
+        
+        //Prints sorted array
+        System.out.print("\nSorted Array: ");
         for (int i = 0; i < array.length; i++)
         {
-            System.out.println(array[i]);
+            if(i != 0) System.out.print(", ");
+            if (i % 20 == 0) System.out.println();
+            System.out.print(array[i]);
         }
+        System.out.println();
     }
     
     public static void radixSort(int[] array)
     {
-        int numberOfDigits = getMaxDigits(array), digit, nextDigit, buffer;
-        for (int digitNumber = 1; digitNumber <= numberOfDigits; digitNumber++)
+        int largestValue = getLargestValue(array);
+        
+        for (int exponent = 1; largestValue / exponent > 0; exponent *= 10)
         {
-            nextDigit = getDigit(array[0], digitNumber);
-            for (int i = 0; i < array.length - 1; i++)
+            int[] sortedArray = new int[array.length], numberOfNumbers = new int[10];
+            
+            //Gets number of digits with the same value (number of 0's, 1's, ...)
+            for (int i = 0; i < array.length; i++)
+                numberOfNumbers[getDigit(array[i], exponent)]++;
+            
+            //Get's real position of numbers in sortedArray 
+            for (int i = 1; i < 10; i++)
+                numberOfNumbers[i] += numberOfNumbers[i - 1];
+            
+            //Writes to sortedArray (in reverse order because position in numberOfNumbers is the furthest position of that digit
+            for(int i = array.length - 1; i >= 0; i--)
             {
-                digit = nextDigit;
-                nextDigit = getDigit(array[i + 1], digitNumber);
-                
-                if (digit > nextDigit)
-                {
-                    buffer = array[i + 1];
-                    array[i + 1] = array[i];
-                    array[i] = buffer;
-                }
+                sortedArray[numberOfNumbers[getDigit(array[i], exponent)] - 1] = array[i];
+                numberOfNumbers[getDigit(array[i], exponent)]--;
             }
+            
+            //Updates array with sorted digits
+            for (int i = 0; i < array.length; i++)
+                array[i] = sortedArray[i];
         }
     }
     
@@ -52,31 +75,22 @@ public class RadixSort {
      */
     public static int getDigit(int number, int digitNumber)
     {
-        int digit;
-        digit = (int) (number % Math.pow(10, digitNumber));
-        digit = (int) (digit / Math.pow(10, digitNumber - 1));
-        return digit;
+        return (int) (number / digitNumber) % 10;
     }
     
     /**
-     * Gets number of digits in largest number of the array
+     * Gets the largest number in the array
      * @param array Array to search
-     * @return Number of digits in largest number of array
+     * @return Value of largest number in array
      */
-    public static int getMaxDigits(int[] array)
+    public static int getLargestValue(int[] array)
     {
-        int numberOfDigits = 0;
+        int largestValue = 0;
         for (int element : array)
         {
-            int testNum = element, tempDigits = 0;
-            while(testNum != 0) 
-            {
-                testNum /= 10;
-                tempDigits ++;
-            }
-            numberOfDigits = tempDigits > numberOfDigits ? tempDigits : numberOfDigits;
+            largestValue = element > largestValue ? element : largestValue;
         }
-        return numberOfDigits;
+        return largestValue;
     }
     
     /**
@@ -87,6 +101,6 @@ public class RadixSort {
      */
     public static int random(int min, int max)
     {
-        return (int)(Math.random() * max + min);
+        return (int)(Math.random() * (max + 1) + min);
     }
 }
