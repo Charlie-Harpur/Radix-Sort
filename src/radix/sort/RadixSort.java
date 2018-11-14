@@ -13,7 +13,7 @@ public class RadixSort {
     // Input section to determine the size of the array
     static int input = Integer.parseInt(JOptionPane.showInputDialog("How many numbers do you want sorted ?"));
     // Input to determine the maximum size of one of the numbers in the array
-    static int maxRando = Integer.parseInt(JOptionPane.showInputDialog("Enter the maximum value of the numbers ?\nEntering 1000 will allow random numbers ranging from 1 - 1000"));
+    static int maxRando = Integer.parseInt(JOptionPane.showInputDialog("Enter the maximum value of the numbers ?\nEntering 1000 will allow random numbers ranging from 0 - 1000"));
     static int[] array = new int[input];
     
     public static void main(String[] args) {
