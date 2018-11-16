@@ -49,21 +49,21 @@ public class RadixSort {
         
         for (int exponent = 1; largestValue / exponent > 0; exponent *= 10)
         {
-            int[] sortedArray = new int[input], numberOfNumbers = new int[10];
+            int[] sortedArray = new int[input], numberCount = new int[10];
             
             //Gets number of digits with the same value (number of 0's, 1's, ...)
             for (int i = 0; i < input; i++)
-                numberOfNumbers[getDigit(array[i], exponent)]++;
+                numberCount[getDigit(array[i], exponent)]++;
             
             //Get's real position of numbers in sortedArray 
             for (int i = 1; i < 10; i++)
-                numberOfNumbers[i] += numberOfNumbers[i - 1];
+                numberCount[i] += numberCount[i - 1];
             
             //Writes to sortedArray (in reverse order because position in numberOfNumbers is the furthest position of that digit
             for(int i = input - 1; i >= 0; i--)
             {
-                sortedArray[numberOfNumbers[getDigit(array[i], exponent)] - 1] = array[i];
-                numberOfNumbers[getDigit(array[i], exponent)]--;
+                sortedArray[numberCount[getDigit(array[i], exponent)] - 1] = array[i];
+                numberCount[getDigit(array[i], exponent)]--;
             }
             
             //Updates array with sorted digits
